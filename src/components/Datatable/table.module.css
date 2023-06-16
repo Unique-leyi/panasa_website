@@ -1,0 +1,4 @@
+.table_bg {
+    background: rgb(142,178,253);
+    background: linear-gradient(90deg, rgba(142,178,253,0.8883928571428571) 46%, rgba(17,24,39,0.9556197478991597) 74%);
+}

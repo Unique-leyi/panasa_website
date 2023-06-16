@@ -1,0 +1,317 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: "Inter", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.cta_btn a, .sub_btn a {
+  @apply bg-sitepink rounded-md text-white py-3  px-5 lg:py-4 lg:px-6 text-[1rem] font-bold hover:translate-x-4 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:!bg-siteblue hover:!text-white;
+}
+
+.sub_btn a {
+  @apply !bg-[transparent] border-solid border-2 border-white py-3  px-5 lg:py-[0.8rem] lg:px-6 
+}
+
+.page-btn a,
+.news_cta a {
+  @apply bg-darkpink transition ease-in-out rounded-md text-white py-3 px-6 text-[1rem] font-semibold hover:bg-siteblue hover:text-white;
+}
+
+.news_btn {
+  @apply hover:bg-sitepink;
+}
+
+.sec_btn a {
+  @apply bg-siteblue text-white rounded-sm py-3 px-6 hover:bg-sitepink;
+}
+
+.news_btn a {
+  @apply text-white;
+}
+
+.slick-dots {
+  @apply !-bottom-12;
+}
+
+.slick-dots li.slick-active button:before {
+  @apply !text-sitepurple;
+}
+
+.gallery_bg:hover .gallery_item {
+  @apply !h-full;
+}
+
+.moment a {
+  @apply text-white font-medium text-lg;
+}
+
+.gallery_carousel a {
+  @apply text-white font-medium text-lg;
+}
+
+.header_fixed {
+  @apply sticky bg-[transparent];
+}
+
+.header_fixed .Header_navigation__sBx7C .nav__menu a {
+  @apply !text-[#000] font-normal hover:!text-siteblue;
+}
+
+.header_sticky {
+  @apply sticky bg-white shadow-lg;
+}
+
+.header_sticky .Header_navigation__sBx7C a {
+  @apply text-[#000] font-medium;
+}
+
+.header_sticky .Header_navigation__sBx7C i {
+  @apply text-siteblue font-medium hover:text-white;
+}
+
+.download_btn a {
+  @apply my-5 bg-sitepink rounded-md py-2 px-6 text-[1rem] font-bold transition ease-in hover:scale-110 duration-300 hover:bg-siteblue text-white;
+}
+
+.quick a {
+  @apply my-2 text-white hover:text-sitegreen;
+}
+
+
+.active-part {
+  @apply bg-deep text-white;
+}
+
+.dropdown-menu a {
+  @apply block py-3 w-full !font-semibold hover:text-deep;
+}
+
+
+
+.material:hover {
+  animation: movedown 1s;
+  transition: animation 0.5s ease-in-out;
+}
+
+.member-img:hover .member-more {
+  @apply !flex transition-all duration-300 ease-in;
+}
+
+.member-more button, .member-more a {
+  @apply border-2 border-solid border-white text-white font-semibold rounded-full py-2 px-3 hover:bg-darkblue hover:border-none;
+}
+
+.side {
+  border-left: 4px solid #039242;
+}
+
+@keyframes movedown {
+  0% {
+    @apply my-1;
+  }
+
+  100% {
+    @apply my-6;
+  }
+}
+
+.team:hover {
+  transform: scale(1.025) !important;
+  transition: transform 0.2s ease-in-out !important;
+}
+
+.more-info {
+  @apply transition-all duration-300;
+}
+
+.team-box:hover .more-info {
+  @apply !block;
+}
+
+.paginate {
+  @apply font-inter block text-[#0e2c0e] font-bold text-center mx-3 hover:bg-sitepurple hover:text-white bg-ash py-1 px-3 text-xl rounded-sm;
+}
+
+.paginate-active {
+  @apply bg-sitepurple text-white;
+}
+
+.action-resc {
+  @apply border-l-8 border-solid border-l-darkblue border-b-8 border-b-sitepurple;
+}
+
+.gallery_btn {
+  @apply border-2 border-sitepink border-solid text-sitepink outline-none py-2 px-6 rounded-md font-semibold bg-[transparent]  text-sm cursor-pointer hover:bg-sitepink hover:text-white font-inter mx-2;
+}
+
+.gallery_item:hover .in-view {
+  @apply flex;
+}
+
+.active_btn {
+  @apply text-white bg-sitepurple;
+}
+
+.caption {
+  @apply bg-sitepurple my-1 py-1 px-4 font-medium text-white text-sm rounded-l-full rounded-none;
+}
+
+/*Carousel btn and Modal*/
+
+.carousel_btn {
+  @apply fixed cursor-pointer z-[9999];
+}
+
+.prev_btn {
+  @apply top-[21rem] lg:top-[8rem] translate-y-52 left-4 lg:left-40;
+}
+
+.next_btn {
+  @apply top-[21rem] lg:top-[8rem] translate-y-52 right-4 lg:right-40;
+}
+
+.prev_btn,
+.next_btn {
+  @apply hover:opacity-100 hover:!text-siteblue;
+}
+
+.close {
+  @apply top-[8rem] right-6 lg:right-20  hover:!text-sitepink;
+}
+
+.close_btn {
+  @apply top-[2rem] lg:top-[8rem] right-8 lg:right-20  hover:!text-sitepink;
+}
+
+.modal-content {
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {
+    -webkit-transform: scale(0);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.post-btn a {
+  @apply text-white px-3 font-medium text-center;
+}
+
+.filter-btn .slick-prev:before,
+.filter-btn .slick-next:before {
+  @apply !rounded-sm !text-sitegreen;
+}
+
+
+.fsub__menu a {
+    @apply text-[1rem] mx-8 text-[#dfdfdf] font-normal hover:text-siteblue;
+  }
+
+  /* loader */
+.loader {
+  @apply border-[#8eb2fd] rounded-full border-4 ease-linear h-10 w-10;
+  border-top-color: rgb(17, 24, 39);
+  animation: spinner 1.2s linear infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+/* ==== Responsiveness */
+
+/*  X-Small devices (portrait phones, less than 576px) */
+@media (max-width: 991.98px) {
+  .nav__menu {
+    @apply hidden absolute my-4 top-20 z-[5] left-0 w-full bg-ash overflow-y-auto shadow-md shadow-sitepurple rounded-md;
+  }
+
+  .nav__menu a {
+    @apply block mx-0 py-3 font-semibold px-4 !text-[#000] hover:!text-siteblue active:!bg-siteblue active:!text-white;
+  }
+
+  .nav__menu a {
+    animation: opendown 0.2s;
+    transition: animation 0.4s ease-in-out;
+  }
+
+  .sub__menu a {
+    @apply p-2 mx-8 hover:bg-deep hover:text-siteblue;
+  }
+
+  
+
+  @keyframes opendown {
+    0% {
+      @apply py-3;
+    }
+
+    100% {
+      @apply py-4;
+    }
+  }
+
+  .mobile_menu {
+    @apply block border-2 border-deep border-solid rounded-md py-1 px-2 hover:bg-deep;
+  }
+
+  .mobile_menu i {
+    @apply text-xl font-medium cursor-pointer text-deep hover:text-siteblue;
+  }
+
+  .active_menu {
+    @apply !block;
+  }
+}
+
+/* ==== Responsiveness */
+/* Footer Responsively */
+
+/*  X-Small devices (portrait phones, less than 576px) */
+@media (max-width: 991.98px) {
+  .quick a {
+    @apply block my-3 mx-2;
+  }
+}
+
+

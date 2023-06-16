@@ -1,0 +1,12 @@
+.navigation a {
+  color: white;
+  margin-inline: 1rem;
+  font-size: 1rem;
+  transition: 0.5s ease-in-out;
+}
+
+.navigation a:active,
+.navigation a:hover {
+  color: #10ba5a;
+  font-weight: 600;
+}
