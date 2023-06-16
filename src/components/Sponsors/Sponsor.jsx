@@ -9,7 +9,7 @@ function Sponsor(props) {
             <div className="bg-sitered flex lg:justify-between justify-around items-center lg:flex-row flex-col">
                 <div className="rounded-full p-2 w-full flex justify-center items-center flex-wrap">
                     <div className="w-36 h-36 lg:w-40 lg:h-40 relative">
-                        <Image src={props.sponsor} alt={"Sponsor"} className="!border-4 !border-solid !border-darkpurple !rounded-full" width={100} height={100} layout="fill" objectFit="cover"/>
+                        <Image src={props.sponsor} alt={"Sponsor"} className="!border-4 !border-solid !border-darkpurple !rounded-full" width={400} height={400} objectFit="contain"/>
                     </div>
                 </div>
                 

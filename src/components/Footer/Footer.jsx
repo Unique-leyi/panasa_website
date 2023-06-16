@@ -5,92 +5,24 @@ import { faPhoneAlt, faEnvelope, faMapMarkerAlt } from "@fortawesome/free-solid-
 import styles from "./Footer.module.css"
 import Image from 'next/image'
 import { useState } from "react";
+import { NAV_LINKS } from "../../../pages/api/navlinks";
 
+ 
 
-    const NAV_LINKS = [
-        {
-            path: '/',
-            display: 'Home'
-        },
-
-        {
-            path: '#',
-            display: 'About',
-            submenu: true,
-            children: [
-                {
-                    path: '/about',
-                    display: 'About',  
-                },
-
-
-                {
-                    path: '/associations',
-                    display: 'Associations',   
-                },
-
-
-                {
-                    path: '/team',
-                    display: 'Team',   
-                },
-            ]
-        },
-
-        {
-            path: '/ratings',
-            display: 'Ratings'
-        },
-
-        {
-            path: '#news',
-            display: 'News',
-            submenu: true,
-            children: [
-                {
-                    path: '/news',
-                    display: 'News',  
-                },
-
-
-                {
-                    path: '/tournaments/',
-                    display: "President's Cup",   
-                },
-
-
-                {
-                    path: '/tournaments/aysc',
-                    display: 'African Youth Scrabble Cup',   
-                }
-
-
-            ]
-        },
-        
-        {
-            path: '/resources',
-            display: 'Resources'
-        },
-
-        {
-            path: '/gallery',
-            display: 'Gallery'
-        },
-
-        {
-            path: '/contact',
-            display: 'Contact Us'
-        }
-    ];
-
-    const date = new Date();
-    const year = date.getFullYear();
+const date = new Date();
+const year = date.getFullYear();
 
 
 function Footer() {
 
     const [show, setShow] = useState(false);
+    const [open, setOpen] = useState("");
+ 
+    const handleOpen = (e, value) => {
+        e.preventDefault();
+        setOpen(open === value ? "" : value);
+    };
+
 
     return (
         
@@ -148,18 +80,18 @@ function Footer() {
                             NAV_LINKS.map((item, i) => (
                                 <div key={i}>
                                     <div className="group z-40">
-                                        <div className="flex justify-start items-center my-3 lg:m-0 " onMouseOver={() => setShow(!show)}>
+                                        <div className="flex justify-start items-center my-3 lg:m-0">
                                             <Link href={item.path}>
                                                 {item.display}
                                             </Link>
 
-                                            {item.children && <i className={`${show ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"} lg:ml-2 transition-all duration-300 ease-in-out cursor-pointer  text-[#dfdfdf] hover:text-siteblue`}></i>} 
+                                            {item.children && <i className={`${(open === item.display) ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"} lg:ml-2 transition-all duration-300 ease-in-out cursor-pointer  text-[#dfdfdf] hover:text-siteblue`} onClick={(e) => handleOpen(e, item.display)}></i>} 
                                         </div>
 
-                                        {item.submenu && 
-                                            <div className="fsub__menu hidden group-hover:md:block hover:md:block">
+                                        {(open === item.display) && item.submenu && 
+                                            <div className="fsub__menu group-hover:md:block hover:md:block">
                                                 {item.children.map((sublink, i) => 
-                                                    <div className="lg:w-full lg:mx-0 mx-10 flex justify-center items-center" key={i}>
+                                                    <div className="lg:w-full lg:mx-0 mx-10 flex justify-start items-start flex-col" key={i}>
                                                         <Link href={sublink.path}>
                                                             {sublink.display}
                                                         </Link>

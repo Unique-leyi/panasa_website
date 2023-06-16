@@ -48,42 +48,20 @@ function Sponsors() {
 
     const SPONSOR = [
         {
-            sponsor: require('../../assets/images/scrabble_3.png'),
+            sponsor: require('../../assets/images/ojeyz.jpeg'),
         },
 
         {
-            sponsor: require('../../assets/images/scrabble_1.png'),
+            sponsor: require('../../assets/images/ayoci.jpeg'),
         },
 
         {
-            sponsor: require('../../assets/images/scrabble_2.png'),
+            sponsor: require('../../assets/images/atelier.jpeg'),
         },
 
         {
-            sponsor: require('../../assets/images/scrabble_4.jpg'),
+            sponsor: require('../../assets/images/socialiga.jpeg'),
         },
-
-        {
-            sponsor: require('../../assets/images/scrabble_2.png'),
-        },
-
-        {
-            sponsor: require('../../assets/images/scrabble_1.png'),
-        },
-
-        {
-            sponsor: require('../../assets/images/scrabble_4.jpg'),
-        },
-
-        {
-            sponsor: require('../../assets/images/scrabble_3.png'),
-        },
-
-        {
-            sponsor: require('../../assets/images/scrabble_2.png'),
-        },
-
-        
 
     ];
    

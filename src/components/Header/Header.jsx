@@ -6,84 +6,9 @@ import { faPhoneAlt, faEnvelope, faMapMarkerAlt, faClock } from "@fortawesome/fr
 import { motion } from "framer-motion";
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from './Header.module.css'
+import styles from './Header.module.css';
+import { NAV_LINKS } from '../../../pages/api/navlinks';
 
-    const NAV_LINKS = [
-        {
-            path: '/',
-            display: 'Home'
-        },
-
-        {
-            path: '#',
-            display: 'About',
-            submenu: true,
-            children: [
-                {
-                    path: '/about',
-                    display: 'About',  
-                },
-
-
-                {
-                    path: '/associations',
-                    display: 'Associations',   
-                },
-
-
-                {
-                    path: '/team',
-                    display: 'Team',   
-                },
-            ]
-        },
-
-        {
-            path: '/ratings',
-            display: 'Ratings'
-        },
-
-        {
-            path: '#news',
-            display: 'News',
-            submenu: true,
-            children: [
-                {
-                    path: '/news',
-                    display: 'News',  
-                },
-
-
-                {
-                    path: '/tournaments/',
-                    display: "President's Cup",   
-                },
-
-
-                {
-                    path: '/tournaments/aysc',
-                    display: 'African Youth Scrabble Cup',   
-                }
-
-
-            ]
-        },
-        
-        {
-            path: '/resources',
-            display: 'Resources'
-        },
-
-        {
-            path: '/gallery',
-            display: 'Gallery'
-        },
-
-        {
-            path: '/contact',
-            display: 'Contact Us'
-        }
-    ];
 
 function Header() {
     
@@ -93,6 +18,13 @@ function Header() {
     const [show, setShow] = useState(false);
 
     const[unset, setUnSet] = useState(false);
+
+    const [open, setOpen] = useState("");
+ 
+    const handleOpen = (e, value) => {
+        e.preventDefault();
+        setOpen(open === value ? "" : value);
+    };
 
 
     function checkSet(){
@@ -132,6 +64,7 @@ function Header() {
     //Toggle Menu responsively
     const toggleMenu = () => menuRef.current.classList.toggle(`active_menu`);
    
+  
 
     return (
         <>
@@ -162,7 +95,7 @@ function Header() {
                                 
                                 {/* Larger Devices */}
                                 <div className="group hidden lg:block">
-                                    <div className="flex justify-center items-center my-3 lg:m-0" onMouseOver={() => setShow(!show)}>
+                                    <div className="flex justify-center items-center my-3 lg:m-0">
                                         <Link href={item.path}>
                                             {item.display}
                                         </Link>
@@ -170,7 +103,7 @@ function Header() {
                                     </div>
 
                                 {item.submenu && 
-                                        <div className="hidden lg:absolute top-[initial] lg:top-[3.87rem] lg:w-80 lg:right-[28rem] xl:right-[28rem] bg-ash group-hover:md:block hover:md:block transition-all duration-300 ease-in-out dropdown-menu rounded-md lg:shadow-md shadow-deep overflow-hidden sub__menu z-20">
+                                        <div className="hidden lg:absolute top-14 bg-ash group-hover:md:block hover:md:block transition-all duration-300 ease-in-out dropdown-menu rounded-md lg:shadow-md shadow-deep overflow-hidden sub__menu z-20">
                                             {item.children.map((sublink, i) => 
                                                 <div className="lg:w-full lg:mx-0 mx-4 flex justify-around items-center hover:bg-deep px-2" key={i}>
                                                     <i class="ri-medal-line block text-2xl text-darkblue"></i>
@@ -186,16 +119,17 @@ function Header() {
 
                                 {/* Mobile Devices */}
 
-                                <div className="lg:hidden z-40 overflow-y-auto">
-                                    <div className="flex justify-start items-center my-3 lg:m-0" onClick={() => setShow(!show)}>
+                                <div className="lg:hidden z-40">
+                                    <div className="flex justify-start items-center my-3 lg:m-0">
                                         <Link href={item.path}>
-                                            {item.display}
+                                            <a onClick={(e) => handleOpen(e, item.display
+                                                )}>{item.display}</a>
                                         </Link>
 
-                                        {item.children && <i className={`${show ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"} lg:-ml-2 transition-all duration-300 ease-in-out cursor-pointer  hover:text-deep`}></i>} 
+                                        {item.children && <i className={`${(open === item.display) ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"} lg:-ml-2 transition-all duration-300 ease-in-out cursor-pointer  hover:text-deep`}></i>} 
                                     </div>
 
-                                    {show && item.submenu && 
+                                    {(open === item.display) && item.submenu && 
                                         <div className="bg-white sub__menu">
                                             {item.children.map((sublink, i) => 
                                                 <div className="lg:w-full lg:mx-0 mx-10 flex lg:justify-around items-center hover:bg-deep p-2" key={i}>
