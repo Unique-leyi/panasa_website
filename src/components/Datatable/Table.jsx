@@ -4,13 +4,15 @@ import Search from './Search';
 import styles from "./table.module.css"
 import TableHead from './TableHead';
 import TablePaginate from './TablePaginate';
-import { ratingData } from '../../../pages/api/ratingData';
 import Link from 'next/link';
-
+import { useContext } from 'react';
+import { RatingsContext } from '../../../context/RatingsContext';
 
 
 function Table() {
 
+    const ratings = useContext(RatingsContext);
+    
     const heading = [
 
         {title: "S/N"},
@@ -45,7 +47,7 @@ function Table() {
     useEffect(() => {
 
         const getData = () => {
-            setPlayers(ratingData);
+            setPlayers(ratings.ratingsData);
         }
 
         getData();
@@ -78,7 +80,7 @@ function Table() {
         if(search){
             computedPlayers = computedPlayers.filter(
                 player => 
-                    player.name.toLowerCase().includes(search.toLowerCase()) ||
+                    player.fullname.toLowerCase().includes(search.toLowerCase()) ||
                     player.country.toLowerCase().includes(search.toLowerCase())
                 )
         }
@@ -100,6 +102,16 @@ function Table() {
     }, [players, currentPage, search]);
 
     
+   
+    const getInitials = (name) => {
+        const initials = name
+          .split(" ")
+          .map((word) => word.slice(0, 2).toUpperCase())
+          .join("")
+          .slice(0, 4);
+      
+        return initials;
+      };
 
       const searchStyle = {
         container: "justify-end items-end",
@@ -125,7 +137,6 @@ return (
         }
 
          searchStyle={searchStyle}
-        
         />
 
     {playerData.length > 0 ?
@@ -141,11 +152,11 @@ return (
                             </td>
                             <th scope="row" className="flex items-center py-4 px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                 <div className="w-16 h-16 rounded-full border-darkpurple border-4 border-solid relative">
-                                    <Image className="rounded-full" src={player.userImg} alt="Jese image" objectFit="cover" layout="fill" width={100} height={100}/>
+                                    <Image className="rounded-full" src={player.countryflag} alt="Jese image" objectFit="cover" layout="fill" width={100} height={100}/>
                                 </div>
                                 <div className="pl-3">
-                                    <div className="text-[#000] font-semibold">{player.name}</div>
-                                    <div className="font-normal text-[#000]">{player.state}</div>
+                                    <div className="text-[#000] font-semibold">{player.fullname}</div>
+                                    <div className="font-normal text-[#000]">{getInitials(player.fullname)}</div>
                                 </div>  
                             </th>
 
@@ -158,11 +169,11 @@ return (
                             </td>
 
                             <td className="py-4 px-6">
-                                {player.totalGames}
+                                {player.total_games}
                             </td>
 
                             <td className="py-4 px-6">
-                                {player.lastPlayed}
+                                {player.last_played}
                             </td>
                         </tr>
                     ))

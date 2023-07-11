@@ -2,15 +2,17 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import Link from 'next/link'
 import Member from './Member'
-import { Members } from '../../../pages/api/asc_collection';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import the icons you need
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from 'react-paginate';
 import Navigate from '../Ui/Navigate';
-
+import { useContext } from 'react';
+import { AssociationsContext } from '../../../context/AssociationsContext';
 
 function Association() {
+
+    const associations = useContext(AssociationsContext);
 
     const [openDetail, setOpenDetail] = useState(false);
     const [slideNumber, setSlideNumber] = useState(0);
@@ -21,7 +23,7 @@ function Association() {
     const handleOpenDetail = (index) => {
         setOpenDetail(true);
         setSlideNumber(index);
-        setMembers(Members);
+        setMembers(associations);
     }
 
     //Close the Modal
@@ -38,14 +40,14 @@ function Association() {
     useEffect(() => {
 
         const endOffset = itemOffset + itemsPerPage;
-        setCurrentItems(Members.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(Members.length / itemsPerPage));
+        setCurrentItems(associations.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(associations.length / itemsPerPage));
 
     }, [itemOffset, itemsPerPage])
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % Members.length;
+        const newOffset = (event.selected * itemsPerPage) % associations.length;
         setItemOffset(newOffset);
   };
 
@@ -70,13 +72,10 @@ function Association() {
                             <div className="flex justify-around lg:justify-center items-center lg:flex-col flex-row bg-darkblue p-5 lg:py-20 lg:px-20">
                                 <div className="">
                                     <div className="w-16 h-16 lg:w-40 lg:h-40 relative overflow-hidden rounded-full outline outline-4  outline-white border-[6px] border-solid border-deep">
-                                        <Image src={members[slideNumber].symbol} alt={`PAN gallery`} className="modal-content" width={100} height={100} objectFit="cover" layout="fill"/>
+                                        <Image src={`/images/${members[slideNumber].image_url}`} alt={`PAN gallery`} className="modal-content" width={100} height={100} objectFit="cover" layout="fill"/>
                                     </div>
                                 </div>
 
-                                <div className="my-6">
-                                    <h4 className="font-semibold uppercase text-2xl text-white">{members[slideNumber].initials}</h4>
-                                </div>
 
                             </div>
 
@@ -88,28 +87,27 @@ function Association() {
 
                                     <div className="py-5 px-6 border-b-[1px] border-solid border-[rgba(0,0,0,0.3)]">
                                         <div className="w-full flex justify-center lg:justify-end items-center lg:items-end flex-wrap">
-                                            <h4 className="font-extrabold text-2xl lg:text-3xl uppercase">{members[slideNumber].member}</h4>
+                                            <h4 className="font-extrabold text-2xl lg:text-3xl uppercase">{members[slideNumber].country}</h4>
                                         </div>
 
                                         {
-                                            members[slideNumber].details.map((item, i) => (
+                                            members[slideNumber].association_name &&
 
-                                                <div className="my-1" key={i}>
-                                                    <p className="text-sm text-center lg:text-right">Welcome To {item.association} Association Information and Contact Page.</p>
+                                                <div className="my-1">
+                                                    <p className="text-sm text-center lg:text-right">Welcome To { members[slideNumber].association_name} Association Information and Contact Page.</p>
                                                 </div>
-                                            ))
                                         }
 
                                         
                                     </div>
 
                                {
-                                    members[slideNumber].details.map((item, i) => (
-                                        <div key={i}>
+                                    
+                                        <div>
                                         <div className="w-full flex justify-between items-center lg:flex-row flex-col lg:gap-x-4 gap-y-8 my-5 px-6">
 
                                     
-                                            {item.chairman && 
+                                            {members[slideNumber].chairman && 
 
                                                 <div className="flex items-start w-full">
                                                     <div className="flex justify-center items-center border-2 border-darkpink border-solid rounded-md p-2">
@@ -118,13 +116,13 @@ function Association() {
 
                                                     <div className="mx-4">
                                                         <h4 className="font-bold text-[1rem]">Chairman/President:</h4>
-                                                        <h3 className="font-medium text-sm">{item.chairman}</h3>
+                                                        <h3 className="font-medium text-sm">{members[slideNumber].chairman}</h3>
                                                     </div>
 
                                                 </div>
                                             }
 
-                                            {item.secretary && 
+                                            {members[slideNumber].secretary && 
                                                 <div className="flex items-start w-full">
                                                     <div className="flex justify-center items-center border-2 border-darkpink border-solid rounded-md p-2">
                                                         <i class="ri-user-star-fill text-xl font-bold text-darkpink"></i>
@@ -132,14 +130,14 @@ function Association() {
 
                                                     <div className="mx-4">
                                                         <h4 className="font-bold text-[1rem]">Secretary:</h4>
-                                                        <h3 className="font-medium text-sm">{item.secretary}</h3>
+                                                        <h3 className="font-medium text-sm">{members[slideNumber].secretary}</h3>
                                                     </div>
 
                                                 </div>
 
                                             }
 
-                                        {item.contact_person && 
+                                        {members[slideNumber].contact && 
                                         
                                             <div className="flex items-start w-full">
 
@@ -149,7 +147,7 @@ function Association() {
 
                                                 <div className="mx-4">
                                                     <h4 className="font-bold text-[1rem]">Contact(s):</h4>
-                                                    <h3 className="font-medium text-sm">{item.contact_person}</h3>
+                                                    <h3 className="font-medium text-sm">{members[slideNumber].contact}</h3>
                                                 </div>
 
                                             </div>
@@ -162,18 +160,18 @@ function Association() {
                                  <div className="w-full flex justify-between items-center gap-x-4 bg-ash py-8 px-2">
                                         <div className="mx-4">
                                             <h4 className="font-bold text-[1rem]">Top PANASA Ranked Player:</h4>
-                                            <h3 className="font-medium text-sm">{item.top_player}</h3>
+                                            <h3 className="font-medium text-sm">{members[slideNumber].ranked_players}</h3>
                                         </div>
 
                                         <div className="mx-4">
                                             <h4 className="font-bold text-[1rem]">No. of PANASA Rated Players:</h4>
-                                            <h3 className="font-medium text-sm">{item.top_rated}</h3>
+                                            <h3 className="font-medium text-sm">{members[slideNumber].top_panasa_ranked}</h3>
                                         </div>
                                 </div>
 
                                 </div>
 
-                                    ))
+                                    
                                 }
 
                                 </div>
@@ -181,35 +179,25 @@ function Association() {
                                 {/* Socials */}
 
                                     {
-                                        members[slideNumber].details.map((item, i) => {
-                                            return item.social_media.map((social) => (
-                                                <div key={i}>
+                                        
+                                                <div>
                                                     <div className="bg-deep py-4 px-5">
                                                         <h5 className="text-sm font-normal mb-4 lg:mb-2 text-ash mx-2">Our Social Media Platforms:</h5>
                     
                                                         <div className="flex justify-start items-start lg:flex-nowrap flex-wrap lg:gap-x-4 gap-y-3">
-                                                            { social.fb_group && <Link href={social.fb_group}>
+                                                            { members[slideNumber].facebook && <Link href={members[slideNumber].facebook}>
                                                                 <div className="flex items-center flex-wrap cursor-pointer">
-                                                                    <a href={social.fb_group} className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i className="ri-facebook-circle-fill text-sm"></i></a>
-                                                                    <h5 className="text-sm text-white hover:text-darkblue">{social.fb_group}</h5>
+                                                                    <a href={members[slideNumber].facebook} className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i className="ri-facebook-circle-fill text-sm"></i></a>
+                                                                    <h5 className="text-sm text-white hover:text-darkblue">{members[slideNumber].facebook}</h5>
                                                                 </div>
                                                             </Link>
                                                             }
                                                             
-                                                            {/* { social.fb_page && <Link href={"/"}>
+                                                      
+                                                            { members[slideNumber].website && <Link href={members[slideNumber].website}>
                                                                 <div className="flex items-center flex-wrap cursor-pointer">
-                                                                    <a href="#" className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i className="ri-instagram-fill text-sm"></i></a>
-                                                                    <h5 className="text-sm text-white hover:text-darkblue">{social.fb_page}</h5>
-                                                                </div>
-                                                            </Link>
-
-                                                            }
-                                                             */}
-
-                                                            { item.website && <Link href={item.website}>
-                                                                <div className="flex items-center flex-wrap cursor-pointer">
-                                                                    <a href={item.website} className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i class="ri-global-fill"></i></a>
-                                                                    <a href={item.website} className="text-sm text-white hover:text-darkblue">{item.website}</a>
+                                                                    <a href={members[slideNumber].website} className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i class="ri-global-fill"></i></a>
+                                                                    <a href={members[slideNumber].website} className="text-sm text-white hover:text-darkblue">{members[slideNumber].website}</a>
                                                                 </div>
                                                             </Link>
 
@@ -221,8 +209,7 @@ function Association() {
                                                     </div>
 
                                                 </div>
-                                            ))
-                                        })
+                                    
                                     }
 
                             </div>

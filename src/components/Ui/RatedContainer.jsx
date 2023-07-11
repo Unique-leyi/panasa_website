@@ -6,9 +6,13 @@ import Slider from "react-slick"
 import Table from "../Datatable/Table"
 import styles from "../Ratings/ratings.module.css"
 import Link from "next/link"
+import { useContext } from "react";
+import { RatingsContext } from '../../../context/RatingsContext';
 
 
 function RatedContainer() {
+    const ratings = useContext(RatingsContext);
+ 
     const [mostRated, setMostRated] = useState([]);
 
     useEffect(() => {
@@ -18,6 +22,7 @@ function RatedContainer() {
 
         getRated();
     }, [])
+
 
 
     // slider
@@ -115,6 +120,7 @@ function RatedContainer() {
                     <div className="w-full">
                             <h5 className="font-medium text-lg text-white">PANASA Ratings</h5>
                             <h3 className="text-darkblue text-2xl lg:text-4xl font-bold">Player Ratings</h3>
+                            <h3 className="font-medium text-lg text-white">Rating After, {ratings.tournamentData.title}</h3>
                     </div> 
 
                 </div>

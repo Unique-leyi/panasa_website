@@ -7,8 +7,41 @@ import Idea from '../src/components/Ui/Idea';
 import Ratings from '../src/components/Ratings/Ratings';
 import Resource from '../src/components/Resources/Resource';
 import Sponsors from '../src/components/Sponsors/Sponsors';
+import apiRoute from '../src/components/util/axios-helper';
+import RatingContext from '../context/RatingsContext';
 
-export default function Home() {
+export const getServerSideProps = async () => {
+  let data = null;
+  let tournamentData = null;
+
+  try {
+    const lastResult = await apiRoute('/api/tournament/last-record');
+    const res = await lastResult.get();
+    tournamentData =  res.data;
+
+    const getRatings = await apiRoute(`/api/tournament/${res.data.id}/ratings`);
+    const ratings = await getRatings.get();
+
+    if(ratings.data) {
+      data = ratings.data;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
+  return {
+    props: { data, tournamentData },
+  }
+}
+
+
+export default function Home({ data, tournamentData }) {
+
+  let responseData = {
+    ratingsData: data,
+    tournamentData: tournamentData,
+  }
+
   return (
     <>
       <Head>
@@ -19,7 +52,9 @@ export default function Home() {
       <Hero/>
       <About/>
       <News/>
-      <Ratings/>
+      <RatingContext ratingData={responseData}>
+        <Ratings/>
+      </RatingContext>
       <Idea/>
       <Resource/>
       <Sponsors/>
