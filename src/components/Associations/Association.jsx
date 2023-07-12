@@ -23,7 +23,7 @@ function Association() {
     const handleOpenDetail = (index) => {
         setOpenDetail(true);
         setSlideNumber(index);
-        setMembers(associations);
+        setMembers(associations.associationData);
     }
 
     //Close the Modal
@@ -40,18 +40,51 @@ function Association() {
     useEffect(() => {
 
         const endOffset = itemOffset + itemsPerPage;
-        setCurrentItems(associations.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(associations.length / itemsPerPage));
+        setCurrentItems(associations.associationData.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(associations.associationData.length / itemsPerPage));
 
     }, [itemOffset, itemsPerPage])
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % associations.length;
+        const newOffset = (event.selected * itemsPerPage) % associations.associationData.length;
         setItemOffset(newOffset);
   };
 
 
+  const countryFlags = {
+    "Nigeria": "NGA",
+    "Kenya": "KEN",
+    "Ghana": "GHA",
+    "South Africa": "ZAF",
+    "Zambia": "ZMB",
+    "Uganda": "UGA",
+    "Liberia": "LBR",
+    "Tanzania": "TAN",
+    "Sierra Leone": "SIE",
+    "Botswana": "BOT",
+}
+
+//  Get No. of Ranked Players and Top_rated_player
+
+    function getAssociationRanked(country){
+        const checkedCountry = countryFlags[country];
+
+        if(checkedCountry){
+            const filteredRanked = associations.ratings.filter(ranked => ranked.country == checkedCountry);
+            return filteredRanked.length;
+        }
+    }
+
+
+    function getTopRated(country){
+        const checkedCountry = countryFlags[country];
+
+        if(checkedCountry){
+            const filteredRanked = associations.ratings.filter(ranked => ranked.country == checkedCountry);
+            return filteredRanked[0] != undefined ? filteredRanked[0].id : 0;
+        }
+    }
     
 
 
@@ -72,7 +105,7 @@ function Association() {
                             <div className="flex justify-around lg:justify-center items-center lg:flex-col flex-row bg-darkblue p-5 lg:py-20 lg:px-20">
                                 <div className="">
                                     <div className="w-16 h-16 lg:w-40 lg:h-40 relative overflow-hidden rounded-full outline outline-4  outline-white border-[6px] border-solid border-deep">
-                                        <Image src={`/images/${members[slideNumber].image_url}`} alt={`PAN gallery`} className="modal-content" width={100} height={100} objectFit="cover" layout="fill"/>
+                                        <Image src={`/images/${currentItems[slideNumber].image_url}`} alt={`PAN gallery`} className="modal-content" width={100} height={100} objectFit="cover" layout="fill"/>
                                     </div>
                                 </div>
 
@@ -87,14 +120,14 @@ function Association() {
 
                                     <div className="py-5 px-6 border-b-[1px] border-solid border-[rgba(0,0,0,0.3)]">
                                         <div className="w-full flex justify-center lg:justify-end items-center lg:items-end flex-wrap">
-                                            <h4 className="font-extrabold text-2xl lg:text-3xl uppercase">{members[slideNumber].country}</h4>
+                                            <h4 className="font-extrabold text-2xl lg:text-3xl uppercase">{currentItems[slideNumber].country}</h4>
                                         </div>
 
                                         {
-                                            members[slideNumber].association_name &&
+                                            currentItems[slideNumber].association_name &&
 
                                                 <div className="my-1">
-                                                    <p className="text-sm text-center lg:text-right">Welcome To { members[slideNumber].association_name} Association Information and Contact Page.</p>
+                                                    <p className="text-sm text-center lg:text-right">Welcome To { currentItems[slideNumber].association_name} Association Information and Contact Page.</p>
                                                 </div>
                                         }
 
@@ -107,7 +140,7 @@ function Association() {
                                         <div className="w-full flex justify-between items-center lg:flex-row flex-col lg:gap-x-4 gap-y-8 my-5 px-6">
 
                                     
-                                            {members[slideNumber].chairman && 
+                                            {currentItems[slideNumber].chairman && 
 
                                                 <div className="flex items-start w-full">
                                                     <div className="flex justify-center items-center border-2 border-darkpink border-solid rounded-md p-2">
@@ -116,13 +149,13 @@ function Association() {
 
                                                     <div className="mx-4">
                                                         <h4 className="font-bold text-[1rem]">Chairman/President:</h4>
-                                                        <h3 className="font-medium text-sm">{members[slideNumber].chairman}</h3>
+                                                        <h3 className="font-medium text-sm">{currentItems[slideNumber].chairman}</h3>
                                                     </div>
 
                                                 </div>
                                             }
 
-                                            {members[slideNumber].secretary && 
+                                            {currentItems[slideNumber].secretary && 
                                                 <div className="flex items-start w-full">
                                                     <div className="flex justify-center items-center border-2 border-darkpink border-solid rounded-md p-2">
                                                         <i class="ri-user-star-fill text-xl font-bold text-darkpink"></i>
@@ -130,14 +163,14 @@ function Association() {
 
                                                     <div className="mx-4">
                                                         <h4 className="font-bold text-[1rem]">Secretary:</h4>
-                                                        <h3 className="font-medium text-sm">{members[slideNumber].secretary}</h3>
+                                                        <h3 className="font-medium text-sm">{currentItems[slideNumber].secretary}</h3>
                                                     </div>
 
                                                 </div>
 
                                             }
 
-                                        {members[slideNumber].contact && 
+                                        {currentItems[slideNumber].contact && 
                                         
                                             <div className="flex items-start w-full">
 
@@ -147,7 +180,7 @@ function Association() {
 
                                                 <div className="mx-4">
                                                     <h4 className="font-bold text-[1rem]">Contact(s):</h4>
-                                                    <h3 className="font-medium text-sm">{members[slideNumber].contact}</h3>
+                                                    <h3 className="font-medium text-sm">{currentItems[slideNumber].contact}</h3>
                                                 </div>
 
                                             </div>
@@ -160,12 +193,12 @@ function Association() {
                                  <div className="w-full flex justify-between items-center gap-x-4 bg-ash py-8 px-2">
                                         <div className="mx-4">
                                             <h4 className="font-bold text-[1rem]">Top PANASA Ranked Player:</h4>
-                                            <h3 className="font-medium text-sm">{members[slideNumber].ranked_players}</h3>
+                                            <h3 className="font-medium text-sm">{getTopRated(currentItems[slideNumber].country)}</h3>
                                         </div>
 
                                         <div className="mx-4">
                                             <h4 className="font-bold text-[1rem]">No. of PANASA Rated Players:</h4>
-                                            <h3 className="font-medium text-sm">{members[slideNumber].top_panasa_ranked}</h3>
+                                            <h3 className="font-medium text-sm">{getAssociationRanked(currentItems[slideNumber].country)}</h3>
                                         </div>
                                 </div>
 
@@ -185,19 +218,19 @@ function Association() {
                                                         <h5 className="text-sm font-normal mb-4 lg:mb-2 text-ash mx-2">Our Social Media Platforms:</h5>
                     
                                                         <div className="flex justify-start items-start lg:flex-nowrap flex-wrap lg:gap-x-4 gap-y-3">
-                                                            { members[slideNumber].facebook && <Link href={members[slideNumber].facebook}>
+                                                            { currentItems[slideNumber].facebook && <Link href={currentItems[slideNumber].facebook}>
                                                                 <div className="flex items-center flex-wrap cursor-pointer">
-                                                                    <a href={members[slideNumber].facebook} className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i className="ri-facebook-circle-fill text-sm"></i></a>
-                                                                    <h5 className="text-sm text-white hover:text-darkblue">{members[slideNumber].facebook}</h5>
+                                                                    <a href={currentItems[slideNumber].facebook} className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i className="ri-facebook-circle-fill text-sm"></i></a>
+                                                                    <h5 className="text-sm text-white hover:text-darkblue">{currentItems[slideNumber].facebook}</h5>
                                                                 </div>
                                                             </Link>
                                                             }
                                                             
                                                       
-                                                            { members[slideNumber].website && <Link href={members[slideNumber].website}>
+                                                            { currentItems[slideNumber].website && <Link href={currentItems[slideNumber].website}>
                                                                 <div className="flex items-center flex-wrap cursor-pointer">
-                                                                    <a href={members[slideNumber].website} className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i class="ri-global-fill"></i></a>
-                                                                    <a href={members[slideNumber].website} className="text-sm text-white hover:text-darkblue">{members[slideNumber].website}</a>
+                                                                    <a href={currentItems[slideNumber].website} className="bg-darkpink hover:bg-siteblue hover:text-secondary transition-all duration-150 py-1 px-2 mx-2 rounded-full text-white"><i class="ri-global-fill"></i></a>
+                                                                    <a href={currentItems[slideNumber].website} className="text-sm text-white hover:text-darkblue">{currentItems[slideNumber].website}</a>
                                                                 </div>
                                                             </Link>
 

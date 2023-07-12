@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import Search from './Search';
 import styles from "./table.module.css"
 import TableHead from './TableHead';
@@ -12,7 +13,10 @@ import { RatingsContext } from '../../../context/RatingsContext';
 function Table() {
 
     const ratings = useContext(RatingsContext);
-    
+    const router = useRouter();
+
+    const { pathname } = router;
+
     const heading = [
 
         {title: "S/N"},
@@ -41,7 +45,15 @@ function Table() {
 
     //showButton
     const [showButton, setShowButton] = useState(false);
-    const itemsPerPage = 10;
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+
+    useEffect(() => {
+      if (pathname === "/ratings") {
+        setItemsPerPage(20);
+      } else {
+        setItemsPerPage(10);
+      }
+    }, [pathname]);
 
     //Get the data
     useEffect(() => {
@@ -102,17 +114,36 @@ function Table() {
     }, [players, currentPage, search]);
 
     
+    const countryFlags = {
+        nga: "/images/flagnga.png",
+        ken: "/images/flagken.png",
+        gha: "/images/flaggha.png",
+        zaf: "/images/flagzaf.png",
+        zmb: "/images/flagzam.png",
+        uga: "/images/flaguga.png",
+        lbr: "/images/flaglbr.png",
+        mys: "/images/flagmys.png",
+        tan: "/images/flagtan.png",
+        sie: "/images/flagsie.png",
+        bot: "/images/flagbot.png",
+    }
+
+    const getCountryFlags = (country) => {
+        if(country) return countryFlags[country];
+    }
+
    
     const getInitials = (name) => {
         const initials = name
           .split(" ")
-          .map((word) => word.slice(0, 2).toUpperCase())
+          .map((word, index) => (index === 0 ? word[0] : word.slice(0, 3)))
           .join("")
+          .toUpperCase()
           .slice(0, 4);
       
         return initials;
       };
-
+      
       const searchStyle = {
         container: "justify-end items-end",
         inputContainer: "",
@@ -152,7 +183,7 @@ return (
                             </td>
                             <th scope="row" className="flex items-center py-4 px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                 <div className="w-16 h-16 rounded-full border-darkpurple border-4 border-solid relative">
-                                    <Image className="rounded-full" src={player.countryflag} alt="Jese image" objectFit="cover" layout="fill" width={100} height={100}/>
+                                    <Image className="rounded-full" src={getCountryFlags(player.country.toLowerCase())} alt="Jese image" objectFit="cover" layout="fill" width={100} height={100}/>
                                 </div>
                                 <div className="pl-3">
                                     <div className="text-[#000] font-semibold">{player.fullname}</div>
